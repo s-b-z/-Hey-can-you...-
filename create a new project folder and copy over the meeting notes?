@@ -1,0 +1,96 @@
+Hey, can you create a new project folder and copy over the meeting notes?
+
+- Scenario -
+
+Boss:
+
+"Hey SB, I need a favor. We just started a new project for one of our employees. Can you create a new folder called New-Project in their Documents folder and put the meetingNotes.txt file in there? After that, make sure everything copied correctly."
+
+SBZ:
+
+"Sure boss"
+
+
+
+- Step by step: Create a project folder and copy a file - 
+
+
+1. Connect to the employee's computer
+Open Remmina on my Linux desktop
+Start an SSH session to the employee's Windows workstation
+Enter the employee's credentials
+Open PowerShell
+
+
+
+
+2. Check where I am
+
+Before making any changes, I want to see my current location and what's inside the folder.
+
+use: Get-ChildItem
+
+
+3. Navigate to the Documents folder
+
+Move into the employee's Documents directory.
+
+use: Set-Location -Path ".\Documents"
+ 
+
+To make sure I'm in the right place:
+
+use: Get-ChildItem
+
+
+4. Create the new project folder
+
+Create a directory called New-Project.
+
+
+use: New-Item -Path ".\New-Project" -ItemType Directory
+
+Verify it was created:
+
+
+use: Get-ChildItem
+
+I should see:
+
+New-Project
+
+5. Copy the meeting notes file
+
+Copy the file into the new directory.
+
+use: Copy-Item -Path ".\meetingNotes.txt" -Destination ".\New-Project"
+
+
+6. Verify the file exists
+
+Check the contents of the new folder.
+
+use: Get-ChildItem -Path ".\New-Project"
+
+Expected result:
+
+
+meetingNotes.txt
+
+
+7. Open the file and verify the contents
+
+Move into the new folder.
+
+
+use: Set-Location -Path ".\New-Project"
+
+Display the contents of the copied file.
+
+use: Get-Content -Path ".\meetingNotes.txt"
+
+If the contents display correctly, the copy was successful.
+
+✅ DONE
+
+The new project folder was created for the employee, meetingNotes.txt was copied into it, and I verified both the file's existence and its contents to ensure the task completed successfully. 👍
