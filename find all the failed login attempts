@@ -1,0 +1,85 @@
+Hey, Can You Find All the Failed Login Attempts?
+
+-The Situation-
+
+Boss: "Hey SBZ, we received an alert indicating there may have been a brute-force attack against one of our Linux systems overnight. Before we escalate this to Incident Response, I need to know how many failed login attempts occurred and whether there are any patterns in the log data."
+
+SBZ: "OOHHHHH Scripting Time, I got you" 
+
+What I know:
+I know Linux store authentication events in log files 
+I know there could be thousands of entries. 
+I know reading every line manually would take forever. 
+I know I need a script.
+
+Step 1: Create a Script File
+
+nano failed_login_review.sh
+  * Why? -Because you need somewhere to write instructions for the computer.
+
+Step 2: Tell Linux What Language You're Writing
+
+At the top: #!/bin/bash
+  *Why? -Because Linux doesn't automatically know what language you wrote the file in.
+
+This line says:
+
+"When this file runs, give it to Bash."
+
+The same way a browser knows HTML should be interpreted as a webpage.
+
+Step 3: Decide What You Are Looking For/ Tell Bash to look at every log file
+
+for logfile in *.log
+do
+  *This means: For every file ending in .log, Bash will eventually see:
+   Auth1.log, then Auth2.log , then Auth3.log etc....
+
+Step 4: Tell Bash what to do with each file 
+
+grep "Failed" "$logfile"
+  *means " Show me the lines containing the word *failed* "
+
+Step 5: Finish the loop 
+
+done 
+
+Now the whole Script reads : 
+
+#!/bin/bash
+for logfile in *.log
+do
+    grep "Failed" "$logfile"
+done
+
+SAVE: 
+press: CTRL + O -> ENTER -> CTRL + X
+
+To Make it Executable: 
+
+chmod +X failedlogins.sh 
+
+Run It: 
+./failedlogins.sh
+
+Output: 
+Nov 4 Failed password admin
+Nov 4 Failed password root
+Nov 4 Failed password guest
+
+-Analysis-
+
+The script successfully identified failed authentication events within the available log files. The output shows three failed login attempts targeting the accounts admin, root, and guest.
+
+At this stage, the objective was limited to locating failed login entries. Further investigation could include counting failures, identifying source IP addresses, correlating timestamps, determining attack patterns, and escalating findings to incident response if necessary.
+
+Skills Demonstrated:
+
+Bash scripting
+Linux file permissions
+Script execution
+For loops
+Log analysis
+Grep pattern matching
+Basic security investigation workflow
+
