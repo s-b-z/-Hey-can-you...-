@@ -1,0 +1,171 @@
+Boss: "Hey SB, Users are reporting strange account lockouts. So as my SOC tier 1 that I appriecate so much and any company would be so happy to have because you work really hard and your trying your best, please fetch me those failed logins."
+
+SB: "OK Boss that employs me and gives me money to buy food and cat toys, I am on it! WAIT whats the ip address?"
+
+Boss: "it's 10.10.10.25" 
+
+Goal:
+Download the authentication log and look for failed logins.
+
+Step 1: Open a Terminal
+
+I'm already logged on as sara@workstation:~$ so I know I'm in my home directory.
+
+Step 2: Connect to the FTP Server
+
+My boss told me the logs are stored on: 10.10.10.25
+
+So I type:
+
+ftp 10.10.10.25 into the terminal and press Enter.
+
+The server replies:
+
+Connected to 10.10.10.25
+220 FTP Server Ready
+Name:
+
+Step 3: Log In
+
+I know the username is: analyst
+
+So I type: analyst and Press Enter.
+
+The server asks: Password:
+
+I dont know the password so I just Press Enter, because there's a good chance my account has access to this server already. It works! 
+
+The sever says:
+
+230 Login successful
+ftp>
+
+I notice the prompt changed from:
+
+sara@workstation:~$
+
+to
+
+ftp>
+
+this means I'm now talking to the FTP server.
+
+Step 4: Look Around
+
+I need to know what files are available.
+
+I type:
+
+ls
+
+Server responds:
+
+auth.log
+web.log
+firewall.log
+backup.zip
+
+Now I know there's an authentication log.
+
+Step 5: Download the Log
+
+I want:
+
+auth.log
+
+So I type:
+
+get auth.log
+
+Server responds:
+
+local: auth.log remote: auth.log
+226 Transfer complete
+
+Translation:
+
+"I copied auth.log from the server to your computer."
+
+Step 6: Leave FTP
+
+I'm done transferring files.
+
+I Type:
+
+quit
+
+Server responds:
+
+221 Goodbye
+
+My prompt changes back:
+
+sara@workstation:~$
+
+Now I'm no longer connected to FTP.
+
+Step 7: Verify the File Exists
+
+I type:
+
+ls
+
+Output:
+
+auth.log
+
+Now I can physically see the file sitting in my current directory.
+
+Step 8: Read the Log
+
+I type:
+
+cat auth.log
+
+I see:
+
+Nov 13 Failed password for root
+Nov 13 Failed password for admin
+Nov 13 Failed password for guest
+Nov 13 Accepted password for sara
+Step 9: Find Only Failed Logins
+
+The file is huge.
+
+Instead of reading thousands of lines, I type:
+
+grep "Failed" auth.log
+
+Output:
+
+Nov 13 Failed password for root
+Nov 13 Failed password for admin
+Nov 13 Failed password for guest
+
+Now I've filtered the log.
+
+Step 10: Report Back
+
+My findings:
+
+root had failed login attempts
+admin had failed login attempts
+guest had failed login attempts
+
+This might indicate:
+
+a password spraying attack
+credential stuffing
+someone guessing passwords
+
+What Problem Did FTP Solve?
+
+Without FTP:
+
+The log file is stuck on another machine.
+
+With FTP:
+
+I copied the log file from that machine to my computer to send off to my Boss. 
+
+<FINISHED> 
