@@ -1,0 +1,195 @@
+Hey can you check the mailbox and retrieve the email?
+
+Boss: "Hey SB, a user says they aren't receiving emails. Can you connect to the mailbox and see what's actually in there?"
+
+SB: "Absolutely boss. I enjoy my job and definitely do not panic every time I see a new protocol."
+
+Boss: "Good. The user is linda. The password is Pa$$123."
+
+Goal: Connect directly to a POP3 server and retrieve email messages manually.
+
+Step 1: Open a Terminal
+
+I sit down at my workstation and open a Linux terminal.
+
+I see:
+    sara@workstation:~$
+
+This tells me:
+  I am logged in as sara
+  I am in my home directory
+  The terminal is ready for commands
+
+Step 2: Connect to the POP3 Server
+  My boss tells me the mail server's IP address.
+
+POP3 normally listens on:
+  Port 110
+**LEARN YOUR PORTS SB IM CALLING YOU OUT****
+
+I type:
+    telnet 10.10.10.10 110
+and press Enter.
+
+                  WHY?!?
+  Because I want to talk directly to the mailbox service and see if I can retrieve emails.
+
+Think of POP3 like walking into a post office and asking:
+
+"Do I have any mail waiting for me?"
+
+Step 3: The Server Says Hello
+
+The server responds:
+    +OK Dovecot ready
+Translation:
+    "Hello. You have successfully connected to the POP3 server."
+
+This is good news.
+
+If I didn't receive this response I might investigate:
+
+Network connectivity
+Firewall rules
+Service outages
+Incorrect port numbers
+
+Step 4: Tell the Server Who I Am
+
+I type:
+      USER linda
+
+The server responds:
+      +OK
+
+Translation:
+  Me:
+    "Hi, I'm Linda."
+Server:
+    "Okay. Prove it."
+
+Step 5: Authenticate
+
+I type:
+    PASS Pa$$123
+
+If successful:
+    +OK Logged in.
+
+Translation:
+    "Identity confirmed. You may now access your mailbox."
+
+If instead I receive:
+    -ERR Authentication failed
+
+then something is wrong.
+
+I would check:
+
+Username spelling
+Password spelling
+Extra spaces
+Wrong server
+Account issues
+
+Step 6: Check How Many Emails Exist
+
+I type:
+      STAT
+
+Example response:
+    +OK 4 1600
+ 
+Translation:
+    "You have 4 messages waiting."
+
+Step 7: List Available Messages
+
+I type:
+    LIST
+
+Server:
+    1 400
+    2 300
+    3 500
+    4 400
+
+At this point I know:
+
+There are four messages
+The server knows about them
+The mailbox is functioning
+Step 8: Retrieve Message Four
+
+I type:
+    RETR 4
+
+Translation:
+    "Please hand me email number 4."
+
+The server responds with the full message contents.
+
+Step 9: Log Out
+
+I type:
+    QUIT
+
+Server:
+    +OK Logging out.
+
+I return to my normal terminal prompt.
+
+Step 10: Report Back
+
+My findings:
+
+✅ POP3 server reachable
+
+✅ POP3 service running
+
+✅ Authentication successful
+
+✅ Mailbox accessible
+
+✅ Messages available for retrieval
+
+✅ Email #4 successfully retrieved
+
+What Problem Did POP3 Solve?
+
+Without POP3:
+
+I have no convenient way to retrieve messages from my mailbox.
+
+With POP3:
+
+I can connect to a mail server, authenticate, view available mail, and download messages.
+
+Why Should I Care?
+
+Imagine a security alert appears:
+
+"Employee reports suspicious activity in their mailbox."
+
+My boss asks:
+
+"Can we verify whether someone accessed the mailbox?"
+
+Knowing POP3 helps me investigate:
+
+Was someone logging into the mailbox?
+Were emails downloaded?
+Were credentials exposed?
+Is the mailbox being abused?
+Is an outdated protocol still being used?
+
+One thing I immediately notice during this lab:
+
+**USER linda
+**PASS Pa$$123
+
+The username and password are visible in plain text.
+
+If an attacker captured network traffic, they could potentially read those credentials.
+
+Understanding POP3 helps me determine whether mailbox activity is legitimate or whether the issue should be escalated as a possible security incident.
