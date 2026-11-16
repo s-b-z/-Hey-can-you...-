@@ -1,0 +1,184 @@
+Boss: "Hey SB, users are saying email notifications aren't working. As my amazing SOC Tier 1 analyst that definitely deserves a job, can you check if the mail server is accepting emails?"
+
+SB: "Absolutely Boss. I enjoy my job and food..... and shelter I totally know this is not a simulation even though i love people music. What's the mail server IP?"
+
+Boss: "10.64.141.210" oh and can you ah tell your cats i said ......pspspspssss
+
+Goal:     Connect directly to the SMTP mail server and manually send a test email.
+
+Step 1:   Open a Terminal
+I sit down at my workstation and open a Linux terminal.
+I see: 
+    sara@workstation:~$
+
+This tells me:
+    I am logged in as sara
+    I am currently in my home directory
+    The terminal is ready for commands
+
+Step 2: Connect to the Mail Server
+  My boss told me the mail server is located at:    10.64.141.210
+
+SMTP (Simple Mail Transfer Protocol) normally listens on port:    25
+
+So I type:
+    telnet 10.64.141.210 25
+*this reads like "Open a text conversation with whatever is listening on port 25 of 10.64.141.210."
+  and press Enter.
+
+                            WHY!?!>!?>?
+Because I want to talk directly to the mail server and see if it is accepting email traffic.
+
+Step 3: The Server Says Hello
+  The server responds:
+220 example.thm ESMTP
+  Translation:
+"Hello. You've successfully connected to the mail server."
+
+This is good news.
+  *If I didn't receive this message, there could be a network issue, firewall problem, or the mail service might be offline.
+Step 4: Introduce Myself
+  Now that the server knows I'm connected, I need to introduce myself.
+I type:
+HELO client.thm
+  The server responds:
+250 OK
+  Translation:
+      Me:  "Hello mail server, I'd like to send an email."
+  Server:    "Sounds good. Go ahead."
+
+*The 250 status code means the command was accepted successfully.
+
+Step 5: Tell the Server Who Is Sending the Email
+  Every email needs a sender.
+I type:
+  MAIL FROM:<user@client.thm>
+The server responds:
+  250 OK
+Translation:
+    "I'm sending this package from user@client.thm."
+
+The server accepts the sender address.
+
+Step 6: Tell the Server Who Receives the Email
+
+Now I need to provide the recipient.
+
+I type:
+    RCPT TO:<analyst@company.thm>
+The server responds:
+    250 Accepted
+
+Translation:
+    "Please deliver this message to analyst@company.thm."
+Server:
+    "Got it."
+
+At this point the server knows:
+    Who sent the email
+    Who should receive the email
+
+Step 7: Start Writing the Email
+    Now I need to tell the server I'm ready to write the actual message.
+I type:
+      DATA
+The server responds:
+      354 Enter message
+
+Translation:
+      "Okay, I'm ready. What would you like the email to say?"
+
+This is the command that switches from SMTP commands into the email body itself.
+
+**DATA starts the message.
+
+Step 8: Write the Email
+
+I now type the contents of the email.
+
+I type:
+    From: user@client.thm
+    To: analyst@company.thm
+    Subject: Test Email
+ 
+Hello SOC Team,
+ 
+This is a test email.
+ 
+Thanks.
+
+
+
+***Notice the blank line after Subject.***
+That blank line separates the email headers from the actual message body.
+Real email clients do this automatically, but when talking to SMTP directly I have to do it myself.
+
+Step 9: Tell the Server I'm Finished
+
+Once I finish writing the email, I need to tell the server there is nothing left to send.
+
+I type:
+          .
+
+Just a single period.
+Nothing else.
+
+The server responds:
+        250 OK
+
+Translation:
+    "Message received and accepted."
+
+Step 10: Disconnect from the Server
+The email has been accepted.
+My work is done.
+
+I type:
+    QUIT
+
+The server responds:
+    221 Goodbye
+
+The connection closes.
+I am returned to my normal terminal prompt.
+
+Step 11: Report Back
+  My findings:
+✅ SMTP server reachable
+
+✅ SMTP service running
+
+✅ Server accepted sender address
+
+✅ Server accepted recipient address
+
+✅ Server accepted email content
+
+✅ Email successfully submitted
+
+What Problem Did SMTP Solve?
+
+Without SMTP:
+  I have no way to send emails between systems.
+
+With SMTP:
+  I can hand a message directly to a mail server and have it delivered to another user.
+
+
+                    Why should I care?
+Imagine an alert appears:
+    "Mail server sent 50,000 emails in 10 minutes."
+My boss asks:
+    "Is our SMTP server actually working normally, or has it been compromised?"
+
+Knowing how SMTP works allows me to investigate questions such as:
+
+Does the server respond?
+Can users send email?
+Does it allow unauthenticated mail?
+Is it acting as an open relay?
+Could an attacker use it for phishing?
+Is spam being sent from the server?
+
+Understanding the SMTP conversation helps me determine whether the activity is legitimate business traffic or something that requires escalation.
+<FINISHED>
